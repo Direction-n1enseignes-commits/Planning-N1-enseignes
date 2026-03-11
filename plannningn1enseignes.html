@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Planning Enseignes</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #FF5C00;
+    --orange-light: #FF7A2F;
+    --orange-pale: #FFF0E8;
+    --dark: #0D1117;
+    --dark2: #161B22;
+    --dark3: #21262D;
+    --card: #ffffff;
+    --border: #E8EBF0;
+    --text: #1A1F2E;
+    --text2: #6B7280;
+    --text3: #9CA3AF;
+    --blue: #3B82F6;
+    --green: #10B981;
+    --yellow: #F59E0B;
+    --red: #EF4444;
+    --purple: #8B5CF6;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.14);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #F4F6FA;
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ===== LOGIN ===== */
+  #login-screen {
+    min-height: 100vh;
+    background: var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #login-screen::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(255,92,0,0.2) 0%, transparent 70%);
+    top: -200px; right: -200px;
+    border-radius: 50%;
+  }
+
+  #login-screen::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(255,92,0,0.1) 0%, transparent 70%);
+    bottom: -100px; left: -100px;
+    border-radius: 50%;
+  }
+
+  .login-box {
+    background: var(--dark2);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px;
+    padding: 48px 40px;
+    width: 100%; max-width: 420px;
+    position: relative; z-index: 1;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.4);
+  }
+
+  .login-logo {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 40px;
+  }
+
+  .login-logo-icon {
+    width: 48px; height: 48px;
+    background: var(--orange);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+  }
+
+  .login-logo-text {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 20px;
+    color: #fff;
+    line-height: 1.1;
+  }
+
+  .login-logo-text span { color: var(--orange); display: block; font-size: 12px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; }
+
+  .login-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px; font-weight: 800;
+    color: #fff; margin-bottom: 8px;
+  }
+
+  .login-sub { color: var(--text3); margin-bottom: 36px; font-size: 15px; }
+
+  .login-tabs {
+    display: flex; gap: 8px;
+    background: var(--dark3);
+    padding: 4px; border-radius: 12px;
+    margin-bottom: 28px;
+  }
+
+  .login-tab {
+    flex: 1; padding: 10px;
+    border: none; border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 500;
+    cursor: pointer;
+    background: transparent; color: var(--text3);
+    transition: all 0.2s;
+  }
+
+  .login-tab.active {
+    background: var(--orange);
+    color: #fff;
+  }
+
+  .form-group { margin-bottom: 20px; }
+
+  .form-label {
+    display: block; font-size: 13px; font-weight: 500;
+    color: var(--text3); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+
+  .form-input {
+    width: 100%; padding: 14px 16px;
+    background: var(--dark3);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    color: #fff; font-family: 'DM Sans', sans-serif; font-size: 15px;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  .form-input:focus { border-color: var(--orange); }
+  .form-input::placeholder { color: rgba(255,255,255,0.2); }
+
+  .login-btn {
+    width: 100%; padding: 16px;
+    background: var(--orange);
+    color: #fff; border: none; border-radius: 14px;
+    font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700;
+    cursor: pointer; margin-top: 8px;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+
+  .login-btn:hover { background: var(--orange-light); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(255,92,0,0.3); }
+
+  .login-error {
+    background: rgba(239,68,68,0.15);
+    border: 1px solid rgba(239,68,68,0.3);
+    color: #FCA5A5; padding: 12px 16px;
+    border-radius: 10px; font-size: 14px;
+    margin-bottom: 20px; display: none;
+  }
+
+  .login-hint {
+    text-align: center; margin-top: 20px;
+    color: rgba(255,255,255,0.3); font-size: 13px;
+  }
+
+  /* ===== APP SHELL ===== */
+  #app { display: none; }
+
+  .app-header {
+    background: var(--dark);
+    padding: 0 20px;
+    display: flex; align-items: center;
+    height: 60px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+  }
+
+  .header-logo {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px;
+    color: #fff; display: flex; align-items: center; gap: 10px;
+    flex: 1;
+  }
+
+  .header-logo-dot {
+    width: 10px; height: 10px;
+    background: var(--orange); border-radius: 50%;
+    box-shadow: 0 0 10px var(--orange);
+  }
+
+  .header-actions { display: flex; gap: 10px; align-items: center; }
+
+  .header-badge {
+    background: var(--dark2);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--text3); padding: 6px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 500;
+  }
+
+  .btn-logout {
+    background: rgba(239,68,68,0.15);
+    color: #FCA5A5; border: none; padding: 8px 14px;
+    border-radius: 10px; cursor: pointer; font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+  }
+
+  .btn-logout:hover { background: rgba(239,68,68,0.25); }
+
+  /* ===== NAV ===== */
+  .bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--dark);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex; z-index: 100;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .nav-item {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 12px 8px; cursor: pointer;
+    color: rgba(255,255,255,0.35);
+    font-size: 10px; font-weight: 500;
+    transition: color 0.2s; gap: 4px;
+    border: none; background: transparent;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .nav-item.active { color: var(--orange); }
+  .nav-item svg { width: 22px; height: 22px; }
+
+  /* ===== CONTENT ===== */
+  .content {
+    padding: 20px 16px 100px;
+    max-width: 600px; margin: 0 auto;
+  }
+
+  /* ===== STATS ===== */
+  .stats-row {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 10px; margin-bottom: 20px;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 14px 10px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: transform 0.2s;
+  }
+
+  .stat-card:hover { transform: translateY(-2px); }
+
+  .stat-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 26px; font-weight: 800;
+    line-height: 1;
+  }
+
+  .stat-label { font-size: 10px; color: var(--text2); margin-top: 4px; font-weight: 500; }
+
+  /* ===== FILTERS ===== */
+  .filter-row {
+    display: flex; gap: 8px;
+    overflow-x: auto; padding-bottom: 4px;
+    margin-bottom: 12px;
+    scrollbar-width: none;
+  }
+
+  .filter-row::-webkit-scrollbar { display: none; }
+
+  .filter-chip {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: var(--card);
+    font-size: 13px; font-weight: 500;
+    cursor: pointer; white-space: nowrap;
+    color: var(--text2);
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .filter-chip.active {
+    background: var(--text);
+    border-color: var(--text);
+    color: #fff;
+  }
+
+  .filter-chip.orange.active {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: #fff;
+  }
+
+  /* ===== VIEW TOGGLE ===== */
+  .view-toggle {
+    display: flex; gap: 4px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 4px; border-radius: 12px;
+    width: fit-content; margin-bottom: 20px;
+  }
+
+  .view-btn {
+    padding: 8px 16px; border-radius: 9px;
+    border: none; cursor: pointer;
+    font-size: 13px; font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    background: transparent; color: var(--text2);
+    transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+  }
+
+  .view-btn.active { background: var(--text); color: #fff; }
+  .view-btn svg { width: 14px; height: 14px; }
+
+  /* ===== ADD BUTTON ===== */
+  .fab {
+    position: fixed;
+    bottom: 80px; right: 20px;
+    width: 56px; height: 56px;
+    background: var(--orange);
+    border-radius: 18px; border: none;
+    color: #fff; font-size: 28px; cursor: pointer;
+    box-shadow: 0 8px 24px rgba(255,92,0,0.4);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 90; transition: all 0.2s;
+  }
+
+  .fab:hover { transform: scale(1.08); }
+
+  /* ===== KANBAN ===== */
+  .kanban-section { margin-bottom: 24px; }
+
+  .kanban-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .kanban-title {
+    display: flex; align-items: center; gap: 8px;
+    font-weight: 600; font-size: 15px;
+  }
+
+  .kanban-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+
+  .kanban-count {
+    background: var(--border);
+    color: var(--text2);
+    padding: 2px 8px; border-radius: 10px;
+    font-size: 12px; font-weight: 600;
+  }
+
+  /* ===== TASK CARD ===== */
+  .task-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--border);
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .task-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .task-card.afaire { border-left-color: var(--yellow); }
+  .task-card.encours { border-left-color: var(--blue); }
+  .task-card.termine { border-left-color: var(--green); }
+
+  .task-title {
+    font-weight: 600; font-size: 15px; margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .task-meta {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .task-avatar {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: #fff;
+  }
+
+  .task-assignee {
+    font-size: 13px; color: var(--text2); font-weight: 500;
+  }
+
+  .tag {
+    padding: 3px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .tag-pose { background: #EEF2FF; color: #6366F1; }
+  .tag-livraison { background: #F0FDF4; color: #22C55E; }
+  .tag-devis { background: #FFF7ED; color: #F97316; }
+  .tag-installation { background: #F0F9FF; color: #0EA5E9; }
+  .tag-autre { background: #F5F3FF; color: #8B5CF6; }
+  .tag-urgent { background: #FEF2F2; color: var(--red); font-weight: 700; border: 1px solid #FCA5A5; }
+
+  .task-date { font-size: 12px; color: var(--text3); display: flex; align-items: center; gap: 4px; }
+
+  .task-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+
+  .status-badge {
+    padding: 4px 12px; border-radius: 20px;
+    font-size: 12px; font-weight: 600;
+  }
+
+  .status-afaire { background: #FFFBEB; color: #D97706; }
+  .status-encours { background: #EFF6FF; color: #2563EB; }
+  .status-termine { background: #F0FDF4; color: #16A34A; }
+
+  .task-actions { display: flex; gap: 6px; }
+
+  .task-btn {
+    width: 32px; height: 32px;
+    border-radius: 8px; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; transition: all 0.2s;
+  }
+
+  .task-btn-comment { background: #F5F3FF; color: var(--purple); }
+  .task-btn-edit { background: #FFF7ED; color: var(--orange); }
+  .task-btn-delete { background: #FEF2F2; color: var(--red); }
+  .task-btn:hover { opacity: 0.8; transform: scale(1.1); }
+
+  .progress-bar {
+    height: 4px; background: var(--border);
+    border-radius: 4px; overflow: hidden; margin-bottom: 10px;
+  }
+
+  .progress-fill {
+    height: 100%; border-radius: 4px;
+    background: linear-gradient(90deg, var(--orange), var(--orange-light));
+    transition: width 0.4s;
+  }
+
+  .notes-count {
+    font-size: 11px; color: var(--text3);
+    display: flex; align-items: center; gap: 3px;
+  }
+
+  .empty-state {
+    text-align: center; padding: 40px 20px;
+    color: var(--text3);
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+  }
+
+  .empty-state-icon { font-size: 36px; margin-bottom: 10px; }
+
+  /* ===== LIST VIEW ===== */
+  .list-item {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 14px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    cursor: pointer; transition: all 0.2s;
+  }
+
+  .list-item:hover { transform: translateX(4px); }
+
+  .list-status-dot {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+  }
+
+  .list-info { flex: 1; min-width: 0; }
+  .list-title { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .list-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+  /* ===== CALENDAR ===== */
+  .calendar-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .cal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px; font-weight: 800;
+    text-transform: capitalize;
+  }
+
+  .cal-nav {
+    display: flex; gap: 8px;
+  }
+
+  .cal-nav-btn {
+    width: 36px; height: 36px;
+    border-radius: 10px; border: 1.5px solid var(--border);
+    background: var(--card); cursor: pointer; font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .cal-nav-btn:hover { background: var(--orange); color: #fff; border-color: var(--orange); }
+
+  .calendar-grid {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+
+  .cal-days-header {
+    display: grid; grid-template-columns: repeat(7, 1fr);
+    gap: 4px; margin-bottom: 8px;
+  }
+
+  .cal-day-name {
+    text-align: center; font-size: 11px; font-weight: 600;
+    color: var(--text3); text-transform: uppercase; padding: 4px;
+  }
+
+  .cal-days {
+    display: grid; grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+
+  .cal-day {
+    aspect-ratio: 1;
+    border-radius: 10px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s;
+    font-size: 13px; font-weight: 500;
+    position: relative; padding: 4px;
+  }
+
+  .cal-day:hover { background: var(--orange-pale); }
+  .cal-day.today { background: var(--orange); color: #fff; font-weight: 700; }
+  .cal-day.other-month { color: var(--text3); }
+  .cal-day.has-tasks::after {
+    content: ''; position: absolute;
+    bottom: 4px; width: 4px; height: 4px;
+    background: var(--orange); border-radius: 50%;
+  }
+  .cal-day.today::after { background: #fff; }
+
+  .cal-events { margin-top: 4px; }
+
+  .cal-event {
+    background: var(--card);
+    border-radius: 12px; padding: 14px 16px;
+    margin-bottom: 8px; display: flex;
+    align-items: center; gap: 12px;
+    box-shadow: var(--shadow); border: 1px solid var(--border);
+    cursor: pointer; transition: all 0.2s;
+  }
+
+  .cal-event:hover { transform: translateY(-2px); }
+  .cal-event-color { width: 4px; border-radius: 4px; align-self: stretch; flex-shrink: 0; }
+  .cal-event-title { font-weight: 600; font-size: 14px; }
+  .cal-event-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    display: flex; align-items: flex-end; justify-content: center;
+    padding: 20px;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: var(--card);
+    border-radius: 24px 24px 20px 20px;
+    width: 100%; max-width: 560px;
+    max-height: 92vh; overflow-y: auto;
+    transform: translateY(30px);
+    transition: transform 0.3s;
+  }
+
+  .modal-overlay.open .modal { transform: translateY(0); }
+
+  .modal-handle {
+    width: 40px; height: 4px;
+    background: var(--border); border-radius: 4px;
+    margin: 14px auto 0;
+  }
+
+  .modal-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .modal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px; font-weight: 800;
+  }
+
+  .modal-close {
+    width: 36px; height: 36px;
+    border-radius: 10px; border: none;
+    background: var(--border); cursor: pointer;
+    font-size: 18px; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .modal-close:hover { background: var(--red); color: #fff; }
+
+  .modal-body { padding: 20px 24px 24px; }
+
+  .modal-field { margin-bottom: 20px; }
+
+  .modal-label {
+    display: block; font-size: 13px; font-weight: 600;
+    color: var(--text2); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+
+  .modal-input, .modal-select, .modal-textarea {
+    width: 100%; padding: 13px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px; font-family: 'DM Sans', sans-serif;
+    font-size: 15px; color: var(--text);
+    outline: none; transition: border-color 0.2s;
+    background: #fff;
+  }
+
+  .modal-input:focus, .modal-select:focus, .modal-textarea:focus {
+    border-color: var(--orange);
+  }
+
+  .modal-textarea { min-height: 90px; resize: vertical; }
+
+  .modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .modal-save {
+    width: 100%; padding: 16px;
+    background: var(--orange); color: #fff;
+    border: none; border-radius: 14px;
+    font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700;
+    cursor: pointer; transition: all 0.2s;
+    margin-top: 8px;
+  }
+
+  .modal-save:hover { background: var(--orange-light); transform: translateY(-1px); }
+
+  /* ===== DETAIL MODAL ===== */
+  .detail-task-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px; font-weight: 800;
+    margin-bottom: 16px;
+  }
+
+  .detail-meta {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .detail-section-title {
+    font-size: 13px; font-weight: 700;
+    color: var(--text2); text-transform: uppercase;
+    letter-spacing: 0.5px; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .notes-list { margin-bottom: 16px; }
+
+  .note-item {
+    background: #F8F9FC;
+    border-radius: 12px; padding: 12px 14px;
+    margin-bottom: 8px;
+    border-left: 3px solid var(--orange);
+  }
+
+  .note-text { font-size: 14px; line-height: 1.5; margin-bottom: 6px; }
+
+  .note-meta { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 4px; }
+
+  .note-add-row { display: flex; gap: 8px; }
+
+  .note-input {
+    flex: 1; padding: 10px 14px;
+    border: 1.5px solid var(--border); border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px;
+    outline: none; transition: border-color 0.2s;
+  }
+
+  .note-input:focus { border-color: var(--orange); }
+
+  .note-add-btn {
+    padding: 10px 16px;
+    background: var(--orange); color: #fff;
+    border: none; border-radius: 10px; cursor: pointer;
+    font-weight: 600; font-size: 14px; transition: all 0.2s;
+  }
+
+  .note-add-btn:hover { background: var(--orange-light); }
+
+  .photos-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 8px; margin-bottom: 12px;
+  }
+
+  .photo-thumb {
+    aspect-ratio: 1; border-radius: 10px;
+    object-fit: cover; width: 100%;
+    border: 2px solid var(--border); cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .photo-thumb:hover { border-color: var(--orange); transform: scale(1.02); }
+
+  .photo-upload-btn {
+    aspect-ratio: 1; border-radius: 10px;
+    border: 2px dashed var(--border);
+    background: var(--orange-pale);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s;
+    font-size: 12px; color: var(--orange); font-weight: 600; gap: 4px;
+  }
+
+  .photo-upload-btn:hover { border-color: var(--orange); background: #FFE8D6; }
+
+  .progress-section { margin-bottom: 20px; }
+
+  .progress-slider {
+    width: 100%; accent-color: var(--orange);
+    cursor: pointer;
+  }
+
+  .progress-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px; font-weight: 800;
+    color: var(--orange); text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .status-select-row {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 8px; margin-bottom: 20px;
+  }
+
+  .status-option {
+    padding: 10px; border-radius: 10px;
+    border: 2px solid var(--border);
+    text-align: center; cursor: pointer;
+    font-size: 13px; font-weight: 600;
+    transition: all 0.2s; background: #fff;
+  }
+
+  .status-option.selected-afaire { border-color: var(--yellow); background: #FFFBEB; color: #D97706; }
+  .status-option.selected-encours { border-color: var(--blue); background: #EFF6FF; color: #2563EB; }
+  .status-option.selected-termine { border-color: var(--green); background: #F0FDF4; color: #16A34A; }
+
+  /* ===== ADMIN ===== */
+  .admin-section { margin-bottom: 28px; }
+
+  .admin-section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px; font-weight: 800;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .team-member-card {
+    background: var(--card);
+    border-radius: 14px; padding: 16px;
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 10px; box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+
+  .member-avatar {
+    width: 46px; height: 46px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 18px; font-weight: 800; color: #fff;
+    flex-shrink: 0;
+  }
+
+  .member-info { flex: 1; }
+  .member-name { font-weight: 700; font-size: 15px; }
+  .member-role { font-size: 13px; color: var(--text2); margin-top: 2px; }
+
+  .member-stats {
+    display: flex; gap: 8px;
+  }
+
+  .member-stat {
+    text-align: center; padding: 6px 10px;
+    background: #F8F9FC; border-radius: 8px;
+  }
+
+  .member-stat-num { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 16px; }
+  .member-stat-label { font-size: 10px; color: var(--text3); }
+
+  .member-actions { display: flex; gap: 6px; }
+
+  .member-btn {
+    width: 34px; height: 34px; border-radius: 8px; border: none;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size: 16px; transition: all 0.2s;
+  }
+
+  .btn-edit-m { background: #FFF7ED; color: var(--orange); }
+  .btn-del-m { background: #FEF2F2; color: var(--red); }
+  .btn-edit-m:hover, .btn-del-m:hover { opacity: 0.8; }
+
+  .add-member-btn {
+    width: 100%; padding: 14px;
+    border: 2px dashed var(--border);
+    border-radius: 14px; background: transparent;
+    color: var(--text2); cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+    transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+
+  .add-member-btn:hover { border-color: var(--orange); color: var(--orange); background: var(--orange-pale); }
+
+  .stats-overview {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; margin-bottom: 20px;
+  }
+
+  .overview-card {
+    background: var(--card);
+    border-radius: 14px; padding: 18px;
+    box-shadow: var(--shadow); border: 1px solid var(--border);
+  }
+
+  .overview-icon { font-size: 28px; margin-bottom: 8px; }
+  .overview-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px; font-weight: 800;
+  }
+
+  .overview-label { font-size: 13px; color: var(--text2); margin-top: 2px; }
+
+  /* ===== PHOTO VIEWER ===== */
+  .photo-viewer {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.95);
+    z-index: 300; display: flex;
+    align-items: center; justify-content: center;
+    display: none;
+  }
+
+  .photo-viewer.open { display: flex; }
+  .photo-viewer img { max-width: 95vw; max-height: 90vh; border-radius: 12px; }
+  .photo-viewer-close {
+    position: absolute; top: 20px; right: 20px;
+    width: 40px; height: 40px; border-radius: 12px;
+    background: rgba(255,255,255,0.15);
+    border: none; color: #fff; font-size: 20px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+
+  /* PAGE TRANSITIONS */
+  .page { display: none; }
+  .page.active { display: block; animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .hidden { display: none !important; }
+
+  /* ===== MULTI-ASSIGNEE PICKER ===== */
+  .assignee-picker {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding: 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px; background: #fff;
+    min-height: 48px; cursor: pointer;
+  }
+
+  .assignee-picker:focus-within { border-color: var(--orange); }
+
+  .assignee-chip {
+    display: flex; align-items: center; gap: 6px;
+    padding: 5px 10px 5px 6px;
+    border-radius: 20px;
+    font-size: 13px; font-weight: 600;
+    color: #fff; cursor: pointer;
+    transition: opacity 0.15s;
+    user-select: none;
+  }
+
+  .assignee-chip:hover { opacity: 0.85; }
+
+  .assignee-chip-x {
+    font-size: 14px; line-height: 1;
+    opacity: 0.75;
+  }
+
+  .assignee-option {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-size: 14px; font-weight: 500;
+  }
+
+  .assignee-option:hover { background: var(--orange-pale); }
+  .assignee-option.selected { background: var(--orange-pale); }
+
+  .assignee-option-check {
+    width: 18px; height: 18px;
+    border-radius: 6px;
+    border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: #fff; flex-shrink: 0;
+    transition: all 0.15s;
+  }
+
+  .assignee-option.selected .assignee-option-check {
+    border-color: var(--orange);
+    background: var(--orange);
+  }
+
+  .assignee-mini-avatar {
+    width: 22px; height: 22px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 800; color: #fff; flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-icon">🏷️</div>
+      <div class="login-logo-text">
+        Planning Enseignes
+        <span>Gestion des chantiers</span>
+      </div>
+    </div>
+    <h1 class="login-title">Connexion</h1>
+    <p class="login-sub">Choisissez votre profil pour continuer</p>
+
+    <div class="login-tabs">
+      <button class="login-tab active" onclick="setRole('admin')">👑 Admin</button>
+      <button class="login-tab" onclick="setRole('employe')">👤 Employé</button>
+    </div>
+
+    <div id="login-error" class="login-error">Mot de passe incorrect</div>
+
+    <div class="form-group">
+      <label class="form-label">Nom / Identifiant</label>
+      <select class="form-input" id="login-user" style="cursor:pointer">
+        <option value="admin">Administrateur</option>
+        <option value="Alex">Alex</option>
+        <option value="Marie">Marie</option>
+        <option value="Lucas">Lucas</option>
+        <option value="Sophie">Sophie</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Mot de passe</label>
+      <input type="password" class="form-input" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter') doLogin()">
+    </div>
+
+    <button class="login-btn" onclick="doLogin()">Se connecter →</button>
+
+    <p class="login-hint">Admin: <b>admin123</b> · Employés: <b>1234</b></p>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+  <header class="app-header">
+    <div class="header-logo">
+      <div class="header-logo-dot"></div>
+      Planning Enseignes
+    </div>
+    <div class="header-actions">
+      <span class="header-badge" id="header-user-badge">Admin</span>
+      <button class="btn-logout" onclick="logout()">Déco</button>
+    </div>
+  </header>
+
+  <div id="page-tasks" class="page active">
+    <div class="content">
+      <div class="stats-row" id="stats-row"></div>
+      <div class="filter-row" id="filter-members"></div>
+      <div class="filter-row" id="filter-status"></div>
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+        <div class="view-toggle">
+          <button class="view-btn active" id="btn-kanban" onclick="setView('kanban')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="10" rx="1"/><rect x="14" y="17" width="7" height="4" rx="1"/></svg>
+            Kanban
+          </button>
+          <button class="view-btn" id="btn-liste" onclick="setView('liste')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            Liste
+          </button>
+        </div>
+      </div>
+      <div id="tasks-container"></div>
+    </div>
+  </div>
+
+  <div id="page-calendar" class="page">
+    <div class="content">
+      <div class="calendar-header">
+        <h2 class="cal-title" id="cal-month-title"></h2>
+        <div class="cal-nav">
+          <button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button>
+          <button class="cal-nav-btn" onclick="changeMonth(1)">›</button>
+        </div>
+      </div>
+      <div class="calendar-grid">
+        <div class="cal-days-header">
+          <div class="cal-day-name">Lu</div><div class="cal-day-name">Ma</div>
+          <div class="cal-day-name">Me</div><div class="cal-day-name">Je</div>
+          <div class="cal-day-name">Ve</div><div class="cal-day-name">Sa</div>
+          <div class="cal-day-name">Di</div>
+        </div>
+        <div class="cal-days" id="cal-days"></div>
+      </div>
+      <div id="cal-events"></div>
+    </div>
+  </div>
+
+  <div id="page-admin" class="page">
+    <div class="content">
+      <div class="stats-overview" id="admin-overview"></div>
+      <div class="admin-section">
+        <div class="admin-section-title">👥 Équipe</div>
+        <div id="team-list"></div>
+        <button class="add-member-btn" onclick="openAddMember()">+ Ajouter un membre</button>
+      </div>
+      <div class="admin-section">
+        <div class="admin-section-title">📊 Activité récente</div>
+        <div id="admin-activity"></div>
+      </div>
+    </div>
+  </div>
+
+  <button class="fab" id="fab-btn" onclick="openNewTask()">+</button>
+
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="showPage('tasks', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="10" rx="1"/></svg>
+      Tâches
+    </button>
+    <button class="nav-item" onclick="showPage('calendar', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Calendrier
+    </button>
+    <button class="nav-item" id="nav-admin" onclick="showPage('admin', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      Admin
+    </button>
+  </nav>
+</div>
+
+<!-- ===== MODALS ===== -->
+<div class="modal-overlay" id="modal-task">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title" id="modal-task-title">Nouvelle tâche</div>
+      <button class="modal-close" onclick="closeModal('modal-task')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-field">
+        <label class="modal-label">Titre du chantier / tâche *</label>
+        <input type="text" class="modal-input" id="task-input-title" placeholder="Ex: Pose signalétique Cabinet Médical">
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Date</label>
+        <input type="date" class="modal-input" id="task-input-date">
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Assigné à (plusieurs possibles)</label>
+        <div id="assignee-picker-options" style="display:flex;flex-direction:column;gap:4px;padding:8px;border:1.5px solid var(--border);border-radius:12px;background:#fff;"></div>
+      </div>
+      <div class="modal-row">
+        <div class="modal-field">
+          <label class="modal-label">Catégorie</label>
+          <select class="modal-select" id="task-input-category">
+            <option value="Pose">Pose</option>
+            <option value="Livraison">Livraison</option>
+            <option value="Devis">Devis</option>
+            <option value="Installation">Installation</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">Statut</label>
+          <select class="modal-select" id="task-input-status">
+            <option value="afaire">À faire</option>
+            <option value="encours">En cours</option>
+            <option value="termine">Terminé</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Urgent</label>
+        <select class="modal-select" id="task-input-urgent">
+          <option value="0">Non</option>
+          <option value="1">Oui — URGENT</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Description</label>
+        <textarea class="modal-textarea" id="task-input-desc" placeholder="Détails de la tâche..."></textarea>
+      </div>
+      <input type="hidden" id="task-input-id">
+      <button class="modal-save" onclick="saveTask()">💾 Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-detail">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title">Détail tâche</div>
+      <button class="modal-close" onclick="closeModal('modal-detail')">✕</button>
+    </div>
+    <div class="modal-body" id="modal-detail-body"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-member">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title">Ajouter un membre</div>
+      <button class="modal-close" onclick="closeModal('modal-member')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-field">
+        <label class="modal-label">Prénom</label>
+        <input type="text" class="modal-input" id="member-input-name" placeholder="Ex: Thomas">
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Rôle</label>
+        <input type="text" class="modal-input" id="member-input-role" placeholder="Ex: Technicien pose">
+      </div>
+      <button class="modal-save" onclick="saveMember()">Ajouter le membre</button>
+    </div>
+  </div>
+</div>
+
+<div class="photo-viewer" id="photo-viewer" onclick="closePhotoViewer()">
+  <img id="photo-viewer-img" src="">
+  <button class="photo-viewer-close" onclick="closePhotoViewer()">✕</button>
+</div>
+
+<script>
+// ===== STATE =====
+let currentUser = null;
+let currentRole = 'admin';
+let selectedMember = 'Tous';
+let selectedStatus = 'Tous';
+let currentView = 'kanban';
+let calMonth = new Date().getMonth();
+let calYear = new Date().getFullYear();
+let editingTaskId = null;
+let detailTaskId = null;
+
+const ADMIN_PASSWORD = 'admin123';
+const EMPLOYEE_PASSWORD = '1234';
+
+const AVATAR_COLORS = {
+  'Alex': '#3B82F6', 'Marie': '#8B5CF6',
+  'Lucas': '#10B981', 'Sophie': '#F59E0B',
+  'Thomas': '#EF4444', 'Pierre': '#06B6D4',
+};
+
+function getColor(name) {
+  return AVATAR_COLORS[name] || '#6B7280';
+}
+
+let members = ['Alex', 'Marie', 'Lucas', 'Sophie'];
+let memberRoles = { 'Alex': 'Technicien', 'Marie': 'Graphiste', 'Lucas': 'Poseur', 'Sophie': 'Livraison' };
+
+let tasks = [
+  { id: 1, title: 'Pose signalétique Cabinet Médical', date: '2026-03-12', assignees: ['Lucas'], category: 'Pose', status: 'afaire', urgent: false, desc: 'Poser les enseignes extérieures du cabinet Dr. Martin.', notes: [], photos: [], progress: 0 },
+  { id: 2, title: 'Livraison totems Pharmacie Centre', date: '2026-03-11', assignees: ['Sophie', 'Alex'], category: 'Livraison', status: 'afaire', urgent: true, desc: 'Livrer 3 totems commandés.', notes: [], photos: [], progress: 0 },
+  { id: 3, title: 'Devis enseignes Hôtel Bellevue', date: '2026-03-15', assignees: ['Marie'], category: 'Devis', status: 'encours', urgent: false, desc: 'Établir devis pour remplacement enseignes façade.', notes: [{ text: 'RDV confirmé le 14 mars', date: '2026-03-10', author: 'Marie' }], photos: [], progress: 40 },
+  { id: 4, title: 'Installation vitrine Boulangerie Dupont', date: '2026-03-10', assignees: ['Alex', 'Lucas'], category: 'Installation', status: 'termine', urgent: false, desc: 'Vitrine lumineuse LED installée.', notes: [{ text: 'Installation terminée, client très satisfait', date: '2026-03-10', author: 'Alex' }], photos: [], progress: 100 },
+  { id: 5, title: 'Réparation enseigne Pharmacie Nord', date: '2026-03-18', assignees: ['Lucas'], category: 'Autre', status: 'afaire', urgent: false, desc: 'Remettre en état enseigne endommagée.', notes: [], photos: [], progress: 0 },
+];
+
+let nextId = 6;
+
+// ===== LOGIN =====
+function setRole(r) {
+  currentRole = r;
+  document.querySelectorAll('.login-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&r==='admin')||(i===1&&r==='employe')));
+  const sel = document.getElementById('login-user');
+  if (r === 'admin') {
+    sel.innerHTML = '<option value="admin">Administrateur</option>';
+  } else {
+    sel.innerHTML = members.map(m => `<option value="${m}">${m}</option>`).join('');
+  }
+}
+
+function doLogin() {
+  const user = document.getElementById('login-user').value;
+  const pwd = document.getElementById('login-password').value;
+  const err = document.getElementById('login-error');
+  const expected = currentRole === 'admin' ? ADMIN_PASSWORD : EMPLOYEE_PASSWORD;
+  if (pwd !== expected) {
+    err.style.display = 'block';
+    return;
+  }
+  err.style.display = 'none';
+  currentUser = user;
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('header-user-badge').textContent = currentRole === 'admin' ? '👑 Admin' : '👤 ' + user;
+  if (currentRole !== 'admin') {
+    document.getElementById('nav-admin').style.display = 'none';
+    selectedMember = currentUser;
+  }
+  initApp();
+}
+
+function logout() {
+  currentUser = null; currentRole = 'admin';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-password').value = '';
+  setRole('admin');
+  selectedMember = 'Tous'; selectedStatus = 'Tous';
+}
+
+// ===== APP INIT =====
+function initApp() {
+  renderFilters();
+  renderTasks();
+  renderCalendar();
+  renderAdmin();
+}
+
+function showPage(page, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  btn.classList.add('active');
+  if (page === 'calendar') renderCalendar();
+  if (page === 'admin') renderAdmin();
+  document.getElementById('fab-btn').style.display = page === 'tasks' ? 'flex' : 'none';
+}
+
+// ===== FILTERS =====
+function renderFilters() {
+  const membersToShow = currentRole === 'admin' ? ['Tous', ...members] : [currentUser];
+  document.getElementById('filter-members').innerHTML = membersToShow.map(m =>
+    `<button class="filter-chip ${selectedMember===m?'active':''}" onclick="filterMember('${m}')">${m}</button>`
+  ).join('');
+  document.getElementById('filter-status').innerHTML = ['Tous','afaire','encours','termine'].map(s =>
+    `<button class="filter-chip orange ${selectedStatus===s?'active':''}" onclick="filterStatus('${s}')">${statusLabel(s)}</button>`
+  ).join('');
+}
+
+function filterMember(m) { selectedMember = m; renderFilters(); renderTasks(); }
+function filterStatus(s) { selectedStatus = s; renderFilters(); renderTasks(); }
+
+function statusLabel(s) {
+  return s === 'Tous' ? 'Tous' : s === 'afaire' ? 'À faire' : s === 'encours' ? 'En cours' : 'Terminé';
+}
+
+// ===== TASKS =====
+function getFilteredTasks() {
+  return tasks.filter(t => {
+    const byMember = selectedMember === 'Tous' || (t.assignees || []).includes(selectedMember);
+    const byStatus = selectedStatus === 'Tous' || t.status === selectedStatus;
+    return byMember && byStatus;
+  });
+}
+
+function setView(v) {
+  currentView = v;
+  document.getElementById('btn-kanban').classList.toggle('active', v==='kanban');
+  document.getElementById('btn-liste').classList.toggle('active', v==='liste');
+  renderTasks();
+}
+
+function renderTasks() {
+  const filtered = getFilteredTasks();
+  const total = tasks.filter(t => selectedMember==='Tous'||(t.assignees||[]).includes(selectedMember)).length;
+  const afaire = tasks.filter(t => t.status==='afaire'&&(selectedMember==='Tous'||(t.assignees||[]).includes(selectedMember))).length;
+  const encours = tasks.filter(t => t.status==='encours'&&(selectedMember==='Tous'||(t.assignees||[]).includes(selectedMember))).length;
+  const termine = tasks.filter(t => t.status==='termine'&&(selectedMember==='Tous'||(t.assignees||[]).includes(selectedMember))).length;
+
+  document.getElementById('stats-row').innerHTML = `
+    <div class="stat-card"><div class="stat-number" style="color:var(--text)">${total}</div><div class="stat-label">Total</div></div>
+    <div class="stat-card"><div class="stat-number" style="color:var(--yellow)">${afaire}</div><div class="stat-label">À faire</div></div>
+    <div class="stat-card"><div class="stat-number" style="color:var(--blue)">${encours}</div><div class="stat-label">En cours</div></div>
+    <div class="stat-card"><div class="stat-number" style="color:var(--green)">${termine}</div><div class="stat-label">Terminé</div></div>
+  `;
+
+  if (currentView === 'kanban') renderKanban(filtered);
+  else renderList(filtered);
+}
+
+function renderKanban(filtered) {
+  const groups = [
+    { key: 'afaire', label: 'À faire', color: 'var(--yellow)' },
+    { key: 'encours', label: 'En cours', color: 'var(--blue)' },
+    { key: 'termine', label: 'Terminé', color: 'var(--green)' },
+  ];
+  document.getElementById('tasks-container').innerHTML = groups.map(g => {
+    const gt = filtered.filter(t => t.status === g.key);
+    return `<div class="kanban-section">
+      <div class="kanban-header">
+        <div class="kanban-title">
+          <div class="kanban-dot" style="background:${g.color}"></div>
+          ${g.label}
+        </div>
+        <div class="kanban-count">${gt.length}</div>
+      </div>
+      ${gt.length === 0
+        ? `<div class="empty-state"><div class="empty-state-icon">📭</div>Aucune tâche</div>`
+        : gt.map(t => taskCardHTML(t)).join('')}
+    </div>`;
+  }).join('');
+}
+
+function renderList(filtered) {
+  const dotColor = s => s==='afaire'?'var(--yellow)':s==='encours'?'var(--blue)':'var(--green)';
+  document.getElementById('tasks-container').innerHTML = filtered.length === 0
+    ? `<div class="empty-state"><div class="empty-state-icon">📭</div>Aucune tâche</div>`
+    : filtered.map(t => `
+      <div class="list-item" onclick="openDetail(${t.id})">
+        <div class="list-status-dot" style="background:${dotColor(t.status)}"></div>
+        <div class="list-info">
+          <div class="list-title">${t.title}${t.urgent?' <span class="tag tag-urgent" style="font-size:10px;padding:2px 6px">URGENT</span>':''}</div>
+          <div class="list-sub">${(t.assignees||[]).join(', ')} · ${formatDate(t.date)} · ${t.category}</div>
+        </div>
+        <div style="font-size:20px">${t.status==='termine'?'✅':t.status==='encours'?'🔵':'🟡'}</div>
+      </div>`).join('');
+}
+
+function taskCardHTML(t) {
+  const catClass = 'tag-' + t.category.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  const isAdmin = currentRole === 'admin';
+  const assignees = t.assignees || [];
+  const avatarsHTML = assignees.map(a =>
+    `<div class="task-avatar" style="background:${getColor(a)};margin-right:-6px;border:2px solid #fff">${a[0]}</div>`
+  ).join('');
+  const namesHTML = assignees.join(', ');
+  return `
+    <div class="task-card ${t.status}" onclick="openDetail(${t.id})">
+      <div class="task-title">${t.title}</div>
+      <div class="task-meta">
+        <div style="display:flex;align-items:center;margin-right:4px">${avatarsHTML}</div>
+        <span class="task-assignee" style="margin-left:8px">${namesHTML}</span>
+        <span class="tag ${catClass}">${t.category}</span>
+        ${t.urgent ? '<span class="tag tag-urgent">URGENT</span>' : ''}
+        <span class="task-date">📅 ${formatDate(t.date)}</span>
+      </div>
+      ${t.progress > 0 ? `<div class="progress-bar"><div class="progress-fill" style="width:${t.progress}%"></div></div>` : ''}
+      <div class="task-footer">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="status-badge status-${t.status}">${statusLabel(t.status)}</span>
+          ${t.notes.length > 0 ? `<span class="notes-count">💬 ${t.notes.length}</span>` : ''}
+          ${t.photos.length > 0 ? `<span class="notes-count">📷 ${t.photos.length}</span>` : ''}
+        </div>
+        <div class="task-actions" onclick="event.stopPropagation()">
+          <button class="task-btn task-btn-comment" onclick="openDetail(${t.id})" title="Notes">💬</button>
+          ${(isAdmin || (t.assignees||[]).includes(currentUser)) ? `<button class="task-btn task-btn-edit" onclick="openEditTask(${t.id})" title="Modifier">✏️</button>` : ''}
+          ${isAdmin ? `<button class="task-btn task-btn-delete" onclick="deleteTask(${t.id})" title="Supprimer">🗑</button>` : ''}
+        </div>
+      </div>
+    </div>`;
+}
+
+function formatDate(d) {
+  if (!d) return '—';
+  const [y,m,day] = d.split('-');
+  return `${day}/${m}/${y}`;
+}
+
+// ===== TASK CRUD =====
+function renderAssigneePicker(selectedList) {
+  const container = document.getElementById('assignee-picker-options');
+  if (!container) return;
+  container.innerHTML = members.map(m => {
+    const sel = selectedList.includes(m);
+    return `<div class="assignee-option ${sel?'selected':''}" onclick="toggleAssignee('${m}')">
+      <div class="assignee-option-check">${sel?'✓':''}</div>
+      <div class="assignee-mini-avatar" style="background:${getColor(m)}">${m[0]}</div>
+      <span>${m}</span>
+    </div>`;
+  }).join('');
+}
+
+function toggleAssignee(name) {
+  const container = document.getElementById('assignee-picker-options');
+  const option = container.querySelector(`[onclick="toggleAssignee('${name}')"]`);
+  option.classList.toggle('selected');
+  const check = option.querySelector('.assignee-option-check');
+  if (option.classList.contains('selected')) {
+    check.textContent = '✓';
+    option.querySelector('.assignee-option-check').style.background = 'var(--orange)';
+    option.querySelector('.assignee-option-check').style.borderColor = 'var(--orange)';
+  } else {
+    check.textContent = '';
+    option.querySelector('.assignee-option-check').style.background = '';
+    option.querySelector('.assignee-option-check').style.borderColor = '';
+  }
+}
+
+function getSelectedAssignees() {
+  const container = document.getElementById('assignee-picker-options');
+  if (!container) return [];
+  return [...container.querySelectorAll('.assignee-option.selected')]
+    .map(el => el.querySelector('span').textContent.trim());
+}
+
+function openNewTask() {
+  editingTaskId = null;
+  document.getElementById('modal-task-title').textContent = 'Nouvelle tâche';
+  document.getElementById('task-input-title').value = '';
+  document.getElementById('task-input-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('task-input-desc').value = '';
+  document.getElementById('task-input-urgent').value = '0';
+  document.getElementById('task-input-status').value = 'afaire';
+  document.getElementById('task-input-category').value = 'Pose';
+  renderAssigneePicker([members[0]]);
+  openModal('modal-task');
+}
+
+function openEditTask(id) {
+  const t = tasks.find(x => x.id === id);
+  if (!t) return;
+  editingTaskId = id;
+  document.getElementById('modal-task-title').textContent = 'Modifier la tâche';
+  document.getElementById('task-input-title').value = t.title;
+  document.getElementById('task-input-date').value = t.date;
+  document.getElementById('task-input-desc').value = t.desc;
+  document.getElementById('task-input-urgent').value = t.urgent ? '1' : '0';
+  document.getElementById('task-input-status').value = t.status;
+  document.getElementById('task-input-category').value = t.category;
+  renderAssigneePicker(t.assignees || []);
+  openModal('modal-task');
+}
+
+function saveTask() {
+  const title = document.getElementById('task-input-title').value.trim();
+  if (!title) { alert('Le titre est obligatoire'); return; }
+  const assignees = getSelectedAssignees();
+  if (assignees.length === 0) { alert('Veuillez sélectionner au moins un membre'); return; }
+  const data = {
+    title, date: document.getElementById('task-input-date').value,
+    assignees,
+    category: document.getElementById('task-input-category').value,
+    status: document.getElementById('task-input-status').value,
+    urgent: document.getElementById('task-input-urgent').value === '1',
+    desc: document.getElementById('task-input-desc').value,
+  };
+  if (editingTaskId) {
+    const t = tasks.find(x => x.id === editingTaskId);
+    Object.assign(t, data);
+  } else {
+    tasks.unshift({ id: nextId++, notes: [], photos: [], progress: 0, ...data });
+  }
+  closeModal('modal-task');
+  renderTasks();
+}
+
+function deleteTask(id) {
+  if (!confirm('Supprimer cette tâche ?')) return;
+  tasks = tasks.filter(t => t.id !== id);
+  renderTasks();
+}
+
+// ===== DETAIL =====
+function openDetail(id) {
+  detailTaskId = id;
+  renderDetail();
+  openModal('modal-detail');
+}
+
+function renderDetail() {
+  const t = tasks.find(x => x.id === detailTaskId);
+  if (!t) return;
+  const isAdmin = currentRole === 'admin';
+  const catClass = 'tag-' + t.category.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+
+  const assignees = t.assignees || [];
+  const avatarsHTML = assignees.map(a =>
+    `<div class="task-avatar" style="background:${getColor(a)};width:32px;height:32px;font-size:14px;border:2px solid #fff;margin-right:-6px">${a[0]}</div>`
+  ).join('');
+
+  document.getElementById('modal-detail-body').innerHTML = `
+    <div class="detail-task-title">${t.title}</div>
+    <div class="detail-meta">
+      <div style="display:flex;align-items:center">${avatarsHTML}</div>
+      <span style="font-weight:600;margin-left:10px">${assignees.join(', ')}</span>
+      <span class="tag ${catClass}">${t.category}</span>
+      ${t.urgent ? '<span class="tag tag-urgent">URGENT</span>' : ''}
+      <span class="task-date">📅 ${formatDate(t.date)}</span>
+    </div>
+
+    ${t.desc ? `<div style="background:#F8F9FC;border-radius:12px;padding:14px;margin-bottom:20px;font-size:14px;line-height:1.6;color:var(--text2)">${t.desc}</div>` : ''}
+
+    <div class="detail-section-title">📌 Statut</div>
+    <div class="status-select-row" style="margin-bottom:20px">
+      ${['afaire','encours','termine'].map(s => `
+        <div class="status-option ${t.status===s?'selected-'+s:''}" onclick="updateStatus(${t.id},'${s}')">${statusLabel(s)}</div>
+      `).join('')}
+    </div>
+
+    <div class="detail-section-title">📈 Avancement</div>
+    <div class="progress-section">
+      <div class="progress-value" id="prog-value">${t.progress}%</div>
+      <input type="range" class="progress-slider" min="0" max="100" value="${t.progress}"
+        oninput="updateProgress(${t.id}, this.value)">
+    </div>
+
+    <div class="detail-section-title">💬 Notes & avancements</div>
+    <div class="notes-list" id="notes-list-${t.id}">
+      ${t.notes.length === 0 ? '<div style="color:var(--text3);font-size:14px;margin-bottom:12px">Aucune note</div>' :
+        t.notes.map((n,i) => `
+          <div class="note-item">
+            <div class="note-text">${n.text}</div>
+            <div class="note-meta">✍️ ${n.author} · ${formatDate(n.date)}</div>
+          </div>`).join('')}
+    </div>
+    <div class="note-add-row">
+      <input type="text" class="note-input" id="note-input-${t.id}" placeholder="Ajouter une note..." onkeydown="if(event.key==='Enter') addNote(${t.id})">
+      <button class="note-add-btn" onclick="addNote(${t.id})">+</button>
+    </div>
+
+    <div class="detail-section-title" style="margin-top:20px">📷 Photos</div>
+    <div class="photos-grid" id="photos-grid-${t.id}">
+      ${t.photos.map(p => `<img src="${p}" class="photo-thumb" onclick="viewPhoto('${p}')">`).join('')}
+      <label class="photo-upload-btn">
+        <span style="font-size:24px">+</span>
+        <span>Photo</span>
+        <input type="file" accept="image/*" style="display:none" onchange="addPhoto(${t.id}, this)">
+      </label>
+    </div>
+  `;
+}
+
+function updateStatus(id, status) {
+  const t = tasks.find(x => x.id === id);
+  if (!t) return;
+  t.status = status;
+  if (status === 'termine') t.progress = 100;
+  renderDetail();
+  renderTasks();
+}
+
+function updateProgress(id, val) {
+  const t = tasks.find(x => x.id === id);
+  if (!t) return;
+  t.progress = parseInt(val);
+  const el = document.getElementById('prog-value');
+  if (el) el.textContent = val + '%';
+  renderTasks();
+}
+
+function addNote(id) {
+  const inp = document.getElementById('note-input-' + id);
+  const text = inp.value.trim();
+  if (!text) return;
+  const t = tasks.find(x => x.id === id);
+  t.notes.push({ text, date: new Date().toISOString().split('T')[0], author: currentUser || 'Moi' });
+  inp.value = '';
+  renderDetail();
+  renderTasks();
+}
+
+function addPhoto(id, input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const t = tasks.find(x => x.id === id);
+    t.photos.push(e.target.result);
+    renderDetail();
+    renderTasks();
+  };
+  reader.readAsDataURL(file);
+}
+
+function viewPhoto(src) {
+  document.getElementById('photo-viewer-img').src = src;
+  document.getElementById('photo-viewer').classList.add('open');
+}
+
+function closePhotoViewer() {
+  document.getElementById('photo-viewer').classList.remove('open');
+}
+
+// ===== CALENDAR =====
+function changeMonth(dir) {
+  calMonth += dir;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  document.getElementById('cal-month-title').textContent = months[calMonth] + ' ' + calYear;
+
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const offset = (firstDay + 6) % 7;
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const today = new Date();
+
+  const tasksThisMonth = tasks.filter(t => {
+    if (!t.date) return false;
+    const d = new Date(t.date);
+    return d.getFullYear() === calYear && d.getMonth() === calMonth;
+  });
+
+  const taskDays = new Set(tasksThisMonth.map(t => parseInt(t.date.split('-')[2])));
+
+  let html = '';
+  for (let i = 0; i < offset; i++) html += `<div class="cal-day other-month"></div>`;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const isToday = today.getDate()===d && today.getMonth()===calMonth && today.getFullYear()===calYear;
+    const hasTasks = taskDays.has(d);
+    html += `<div class="cal-day ${isToday?'today':''} ${hasTasks?'has-tasks':''}" onclick="selectCalDay(${d})">${d}</div>`;
+  }
+  document.getElementById('cal-days').innerHTML = html;
+
+  const filtered = currentRole === 'admin' ? tasksThisMonth : tasksThisMonth.filter(t => (t.assignees||[]).includes(currentUser));
+  const statusColor = s => s==='afaire'?'var(--yellow)':s==='encours'?'var(--blue)':'var(--green)';
+
+  document.getElementById('cal-events').innerHTML = filtered.length === 0
+    ? `<div class="empty-state"><div class="empty-state-icon">📅</div>Aucune tâche ce mois</div>`
+    : `<div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:12px">Toutes les tâches du mois</div>` +
+      filtered.sort((a,b)=>a.date.localeCompare(b.date)).map(t => `
+        <div class="cal-event" onclick="openDetail(${t.id})">
+          <div class="cal-event-color" style="background:${statusColor(t.status)}"></div>
+          <div style="flex:1">
+            <div class="cal-event-title">${t.title} ${t.urgent?'<span class="tag tag-urgent" style="font-size:10px">URGENT</span>':''}</div>
+            <div class="cal-event-sub">${(t.assignees||[]).join(', ')} · ${formatDate(t.date)} · ${t.category}</div>
+          </div>
+        </div>`).join('');
+}
+
+function selectCalDay(d) {
+  const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  const dayTasks = tasks.filter(t => t.date === dateStr && (currentRole==='admin'||(t.assignees||[]).includes(currentUser)));
+  if (dayTasks.length === 0) return;
+  if (dayTasks.length === 1) { openDetail(dayTasks[0].id); return; }
+  document.getElementById('cal-events').innerHTML = `
+    <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:12px">Tâches du ${d}/${calMonth+1}</div>` +
+    dayTasks.map(t => `<div class="cal-event" onclick="openDetail(${t.id})">
+      <div class="cal-event-color" style="background:${t.status==='afaire'?'var(--yellow)':t.status==='encours'?'var(--blue)':'var(--green)'}"></div>
+      <div><div class="cal-event-title">${t.title}</div><div class="cal-event-sub">${(t.assignees||[]).join(', ')} · ${t.category}</div></div>
+    </div>`).join('');
+}
+
+// ===== ADMIN =====
+function renderAdmin() {
+  const total = tasks.length;
+  const done = tasks.filter(t => t.status === 'termine').length;
+  const urgent = tasks.filter(t => t.urgent).length;
+  const inprogress = tasks.filter(t => t.status === 'encours').length;
+
+  document.getElementById('admin-overview').innerHTML = `
+    <div class="overview-card"><div class="overview-icon">📋</div><div class="overview-value">${total}</div><div class="overview-label">Total tâches</div></div>
+    <div class="overview-card"><div class="overview-icon">✅</div><div class="overview-value" style="color:var(--green)">${done}</div><div class="overview-label">Terminées</div></div>
+    <div class="overview-card"><div class="overview-icon">🔵</div><div class="overview-value" style="color:var(--blue)">${inprogress}</div><div class="overview-label">En cours</div></div>
+    <div class="overview-card"><div class="overview-icon">🚨</div><div class="overview-value" style="color:var(--red)">${urgent}</div><div class="overview-label">Urgentes</div></div>
+  `;
+
+  document.getElementById('team-list').innerHTML = members.map(m => {
+    const mt = tasks.filter(t => (t.assignees||[]).includes(m));
+    const md = mt.filter(t => t.status === 'termine').length;
+    return `
+      <div class="team-member-card">
+        <div class="member-avatar" style="background:${getColor(m)}">${m[0]}</div>
+        <div class="member-info">
+          <div class="member-name">${m}</div>
+          <div class="member-role">${memberRoles[m] || 'Équipe'}</div>
+        </div>
+        <div class="member-stats">
+          <div class="member-stat"><div class="member-stat-num">${mt.length}</div><div class="member-stat-label">Tâches</div></div>
+          <div class="member-stat"><div class="member-stat-num" style="color:var(--green)">${md}</div><div class="member-stat-label">OK</div></div>
+        </div>
+        <div class="member-actions">
+          <button class="member-btn btn-del-m" onclick="removeMember('${m}')">🗑</button>
+        </div>
+      </div>`;
+  }).join('');
+
+  const recent = [...tasks].sort((a,b) => b.id - a.id).slice(0, 5);
+  document.getElementById('admin-activity').innerHTML = recent.map(t => `
+    <div class="list-item" onclick="openDetail(${t.id})" style="cursor:pointer">
+      <div class="list-status-dot" style="background:${t.status==='afaire'?'var(--yellow)':t.status==='encours'?'var(--blue)':'var(--green)'}"></div>
+      <div class="list-info">
+        <div class="list-title">${t.title}</div>
+        <div class="list-sub">${(t.assignees||[]).join(', ')} · ${formatDate(t.date)}</div>
+      </div>
+      <span class="status-badge status-${t.status}" style="font-size:11px">${statusLabel(t.status)}</span>
+    </div>`).join('');
+}
+
+function openAddMember() { openModal('modal-member'); }
+
+function saveMember() {
+  const name = document.getElementById('member-input-name').value.trim();
+  const role = document.getElementById('member-input-role').value.trim();
+  if (!name) { alert('Prénom obligatoire'); return; }
+  if (members.includes(name)) { alert('Ce membre existe déjà'); return; }
+  members.push(name);
+  memberRoles[name] = role || 'Équipe';
+  closeModal('modal-member');
+  renderFilters();
+  renderAdmin();
+}
+
+function removeMember(name) {
+  if (!confirm(`Retirer ${name} de l'équipe ?`)) return;
+  members = members.filter(m => m !== name);
+  renderFilters();
+  renderAdmin();
+}
+
+// ===== MODAL HELPERS =====
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) closeModal(m.id); });
+});
+</script>
+</body>
+</html>
