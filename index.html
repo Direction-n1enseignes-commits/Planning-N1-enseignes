@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Planning Enseignes</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#FF5C00">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Planning">
+<link rel="apple-touch-icon" href="/icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -1767,6 +1773,56 @@ function closeModal(id) {
 document.querySelectorAll('.modal-overlay').forEach(m => {
   m.addEventListener('click', e => { if (e.target === m) closeModal(m.id); });
 });
+
+// ===== PWA & NOTIFICATIONS =====
+async function initPWA() {
+  if ('serviceWorker' in navigator) {
+    try {
+      await navigator.serviceWorker.register('/sw.js');
+      console.log('Service Worker enregistré');
+    } catch(e) {
+      console.log('SW error:', e);
+    }
+  }
+}
+
+async function requestNotifPermission() {
+  if (!('Notification' in window)) return;
+  await Notification.requestPermission();
+}
+
+function sendNotification(title, body) {
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'granted') {
+    new Notification(title, {
+      body: body,
+      icon: '/icon-192.png',
+      vibrate: [200, 100, 200]
+    });
+  }
+}
+
+// Demander permission après login
+const _origInitApp = initApp;
+initApp = function() {
+  _origInitApp();
+  requestNotifPermission();
+};
+
+// Notifier lors de la sauvegarde d'une tâche
+const _origSaveTask = saveTask;
+saveTask = function() {
+  const title = document.getElementById('task-input-title').value.trim();
+  const assignees = getSelectedAssignees();
+  const isNew = !editingTaskId;
+  _origSaveTask();
+  if (title && assignees.length > 0) {
+    const msg = isNew ? `Nouvelle tâche : ${title}` : `Tâche modifiée : ${title}`;
+    sendNotification('📋 Planning Enseignes', msg + '\nAssigné à : ' + assignees.join(', '));
+  }
+};
+
+initPWA();
 </script>
 </body>
 </html>
