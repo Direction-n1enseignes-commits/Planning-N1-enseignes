@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Planning Enseignes</title>
+<title>Planning N1 Enseignes</title>
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#FF5C00">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -13,9 +13,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --orange: #FF5C00;
-    --orange-light: #FF7A2F;
-    --orange-pale: #FFF0E8;
+    --orange: #0047AB;
+    --orange-light: #1A5FCC;
+    --orange-pale: #E8F0FF;
     --dark: #0D1117;
     --dark2: #161B22;
     --dark3: #21262D;
@@ -60,7 +60,7 @@
     content: '';
     position: absolute;
     width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(255,92,0,0.2) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(0,71,171,0.2) 0%, transparent 70%);
     top: -200px; right: -200px;
     border-radius: 50%;
   }
@@ -69,7 +69,7 @@
     content: '';
     position: absolute;
     width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(255,92,0,0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(0,71,171,0.1) 0%, transparent 70%);
     bottom: -100px; left: -100px;
     border-radius: 50%;
   }
@@ -166,7 +166,7 @@
     letter-spacing: 0.5px;
   }
 
-  .login-btn:hover { background: var(--orange-light); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(255,92,0,0.3); }
+  .login-btn:hover { background: var(--orange-light); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,71,171,0.3); }
 
   .login-error {
     background: rgba(239,68,68,0.15);
@@ -342,7 +342,7 @@
     background: var(--orange);
     border-radius: 18px; border: none;
     color: #fff; font-size: 28px; cursor: pointer;
-    box-shadow: 0 8px 24px rgba(255,92,0,0.4);
+    box-shadow: 0 8px 24px rgba(0,71,171,0.4);
     display: flex; align-items: center; justify-content: center;
     z-index: 90; transition: all 0.2s;
   }
@@ -964,10 +964,10 @@
 <div id="login-screen">
   <div class="login-box">
     <div class="login-logo">
-      <div class="login-logo-icon">🏷️</div>
+      <div class="login-logo-icon" style="font-family:Arial,sans-serif;font-size:18px;font-weight:900;color:#fff;background:#003380;">N1</div>
       <div class="login-logo-text">
-        Planning Enseignes
-        <span>Gestion des chantiers</span>
+        Planning N1 Enseignes
+        <span>N1 Enseignes</span>
       </div>
     </div>
     <h1 class="login-title">Connexion</h1>
@@ -1007,7 +1007,7 @@
   <header class="app-header">
     <div class="header-logo">
       <div class="header-logo-dot"></div>
-      Planning Enseignes
+      Planning N1 Enseignes
     </div>
     <div class="header-actions">
       <span class="header-badge" id="header-user-badge">Admin</span>
@@ -1566,7 +1566,13 @@ function renderDetail() {
       <button class="note-add-btn" onclick="addNote(${t.id})">+</button>
     </div>
 
-    <div class="detail-section-title" style="margin-top:20px">📷 Photos</div>
+    <!-- Calendrier Apple -->
+    <div class="detail-section-title" style="margin-top:20px">📅 Calendrier</div>
+    <button onclick="exportToCalendar(${t.id})" style="width:100%;padding:14px;background:#007AFF;color:#fff;border:none;border-radius:14px;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:8px;">
+      📅 Ajouter au calendrier iPhone
+    </button>
+
+    <div class="detail-section-title" style="margin-top:0px">📷 Photos</div>
     <div class="photos-grid" id="photos-grid-${t.id}">
       ${t.photos.map(p => `<img src="${p}" class="photo-thumb" onclick="viewPhoto('${p}')">`).join('')}
       <label class="photo-upload-btn">
@@ -1774,6 +1780,40 @@ document.querySelectorAll('.modal-overlay').forEach(m => {
   m.addEventListener('click', e => { if (e.target === m) closeModal(m.id); });
 });
 
+// ===== EXPORT CALENDRIER =====
+function exportToCalendar(id) {
+  const t = tasks.find(x => x.id === id);
+  if (!t) return;
+
+  const date = t.date ? t.date.replace(/-/g, '') : new Date().toISOString().split('T')[0].replace(/-/g, '');
+  const title = encodeURIComponent(t.title);
+  const details = encodeURIComponent(t.desc || 'Tâche Planning N1 Enseignes');
+  const assignees = encodeURIComponent((t.assignees || []).join(', '));
+
+  // Format ICS
+  const icsContent = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Planning N1 Enseignes//FR',
+    'BEGIN:VEVENT',
+    `DTSTART:${date}`,
+    `DTEND:${date}`,
+    `SUMMARY:${t.title}`,
+    `DESCRIPTION:Assigné à : ${(t.assignees||[]).join(', ')}\\n${t.desc || ''}`,
+    `CATEGORIES:${t.category}`,
+    'END:VEVENT',
+    'END:VCALENDAR'
+  ].join('\r\n');
+
+  const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${t.title.replace(/\s+/g, '-')}.ics`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 // ===== PWA & NOTIFICATIONS =====
 async function initPWA() {
   if ('serviceWorker' in navigator) {
@@ -1818,7 +1858,7 @@ saveTask = function() {
   _origSaveTask();
   if (title && assignees.length > 0) {
     const msg = isNew ? `Nouvelle tâche : ${title}` : `Tâche modifiée : ${title}`;
-    sendNotification('📋 Planning Enseignes', msg + '\nAssigné à : ' + assignees.join(', '));
+    sendNotification('📋 Planning N1 Enseignes', msg + '\nAssigné à : ' + assignees.join(', '));
   }
 };
 

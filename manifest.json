@@ -1,11 +1,11 @@
 {
-  "name": "Planning Enseignes",
-  "short_name": "Planning",
-  "description": "Gestion des chantiers - Planning Enseignes",
+  "name": "Planning N1 Enseignes",
+  "short_name": "N1 Planning",
+  "description": "Gestion des chantiers - N1 Enseignes",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0D1117",
-  "theme_color": "#FF5C00",
+  "theme_color": "#0047AB",
   "orientation": "portrait",
   "icons": [
     {
